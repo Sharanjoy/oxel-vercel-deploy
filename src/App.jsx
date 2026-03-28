@@ -66,6 +66,14 @@ function clearSession() {
   localStorage.removeItem(SESSION_KEY)
 }
 
+function getDisplayName(session) {
+  if (!session) return ''
+  if (session.name && session.name.trim()) return session.name.trim()
+  const email = session.email || ''
+  const local = email.split('@')[0] || ''
+  return local || 'User'
+}
+
 function AuthModal({ open, onClose, onAuthSuccess }) {
   const [email, setEmail] = useState('')
   const [status, setStatus] = useState({ type: '', message: '' })
@@ -81,6 +89,7 @@ function AuthModal({ open, onClose, onAuthSuccess }) {
 
     const nextSession = {
       email: normalizedEmail,
+      name: normalizedEmail.split('@')[0],
       provider: 'email',
       token: generateSessionToken(),
     }
@@ -107,6 +116,7 @@ function AuthModal({ open, onClose, onAuthSuccess }) {
       const result = await signInWithPopup(auth, provider)
       const nextSession = {
         email: result.user.email || 'unknown@user',
+        name: result.user.displayName || (result.user.email || 'user').split('@')[0],
         provider: providerName,
         token: result.user.uid,
       }
@@ -226,9 +236,12 @@ function Navbar({ session, onRequireAuth, onSignOut }) {
       </Link>
       <div className="top-actions">
         {session ? (
-          <button className="btn btn-light" type="button" onClick={onSignOut}>
-            Logout
-          </button>
+          <>
+            <span className="user-chip">{getDisplayName(session)}</span>
+            <button className="btn btn-light" type="button" onClick={onSignOut}>
+              Logout
+            </button>
+          </>
         ) : (
           <button className="btn btn-light" type="button" onClick={onRequireAuth}>
             Login
