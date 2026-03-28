@@ -421,7 +421,10 @@ function HomeForms({ session, onRequireAuth }) {
     <>
       <section className="section" id="build-your-system">
         <h2>Build Your System</h2>
-        <p className="intro">Fill the form and our team will reach you.</p>
+        <p className="intro">
+          Need a custom system for your business?
+          We design and build tailored solutions based on your exact requirements — from idea to working product.
+        </p>
         {projectStatus.message && <p className={`form-status ${projectStatus.type}`}>{projectStatus.message}</p>}
         <form className="form" onSubmit={onProjectSubmit}>
           <input name="name" placeholder="Name" required />
@@ -442,6 +445,7 @@ function HomeForms({ session, onRequireAuth }) {
       <section className="section" id="contact">
         <h2>Contact</h2>
         <p className="intro">Get in touch to see Oxel in action.</p>
+        <p className="intro">Usually responds within a few hours.</p>
         <ContactIconLinks />
       </section>
     </>
